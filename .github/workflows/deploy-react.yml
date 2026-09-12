@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
           cache-dependency-path: task-manager-react/package-lock.json
 
@@ -31,19 +31,12 @@ jobs:
 
       - name: Build React app
         working-directory: task-manager-react
-        run: npm run build -- --base=/task-manager/task-manager-react/
+        run: npm run build -- --base=/task-manager-react/
 
-      - name: Prepare Pages folder
-        run: |
-          mkdir -p dist
-          cp index.html app.js render.js storage.js style.css dist/
-          mkdir -p dist/task-manager-react
-          cp -r task-manager-react/dist/* dist/task-manager-react/
-
-      - name: Upload Pages artifact
+      - name: Upload React build
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: task-manager-react/dist
 
   deploy:
     environment:
