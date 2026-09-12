@@ -14,12 +14,12 @@ function App() {
     const [activeProjectId, setActiveProjectId] = useState("");
 
     useEffect(() => {
-        const loadedTasks = loadTasks();
-        const loadedProjects = loadProjects();
+        let loadedTasks = loadTasks();
+        let loadedProjects = loadProjects();
 
-        // If no projects exist, create default projects
+        // Create default project if no project exists
         if (loadedProjects.length === 0) {
-            const defaultProjects = [
+            loadedProjects = [
                 {
                     id: "project-1",
                     name: "My Project"
@@ -30,71 +30,71 @@ function App() {
                 }
             ];
 
-            const defaultTasks = [
+            saveProjects(loadedProjects);
+        }
+
+        // Create default tasks if no tasks exist
+        if (loadedTasks.length === 0) {
+            const firstProjectId = loadedProjects[0].id;
+
+            loadedTasks = [
                 {
                     id: "task-1",
                     text: "Send project update",
                     category: "Urgent",
                     status: "In Review",
-                    projectId: "project-1"
+                    projectId: firstProjectId
                 },
                 {
                     id: "task-2",
                     text: "Complete pending assignment",
                     category: "Urgent",
                     status: "In Progress",
-                    projectId: "project-1"
+                    projectId: firstProjectId
                 },
                 {
                     id: "task-3",
                     text: "Update personal portfolio",
                     category: "Personal",
                     status: "Done",
-                    projectId: "project-1"
+                    projectId: firstProjectId
                 },
                 {
                     id: "task-4",
                     text: "Plan weekend schedule",
                     category: "Personal",
                     status: "To Do",
-                    projectId: "project-1"
+                    projectId: firstProjectId
                 },
                 {
                     id: "task-5",
                     text: "Test website responsiveness",
                     category: "Work",
                     status: "To Do",
-                    projectId: "project-1"
+                    projectId: firstProjectId
                 },
                 {
                     id: "task-6",
                     text: "Review weekly report",
                     category: "Work",
                     status: "Done",
-                    projectId: "project-1"
+                    projectId: firstProjectId
                 },
                 {
                     id: "task-7",
                     text: "Complete project documentation",
                     category: "Work",
                     status: "To Do",
-                    projectId: "project-1"
+                    projectId: firstProjectId
                 }
             ];
 
-            saveProjects(defaultProjects);
-            saveTasks(defaultTasks);
-
-            setProjects(defaultProjects);
-            setTasks(defaultTasks);
-            setActiveProjectId(defaultProjects[0].id);
-
-            return;
+            saveTasks(loadedTasks);
         }
 
         setProjects(loadedProjects);
         setTasks(loadedTasks);
-        setActiveProjectId(loadedProjects[0]?.id || "");
+        setActiveProjectId(loadedProjects[0].id);
     }, []);
 
     const handleProjectChange = (projectId) => {
